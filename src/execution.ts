@@ -1,6 +1,21 @@
 import * as exec from "@actions/exec";
 
 
+export async function executeInit(root: string, commandLine: string | null): Promise<number> {
+
+    if (commandLine == null) {
+        return 0
+    }
+
+    const status: number = await exec.exec(commandLine, undefined, {
+        cwd: root,
+        ignoreReturnCode: true,
+        listeners: undefined
+    });
+
+    return status
+}
+
 export async function execute(executable: string, root: string, argv: string[]): Promise<BuildResult> {
 
     let publishing = false;

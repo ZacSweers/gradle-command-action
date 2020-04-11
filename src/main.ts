@@ -13,6 +13,11 @@ export async function run() {
 
         const baseDirectory = process.env[`GITHUB_WORKSPACE`] || "";
 
+        let init = await execution.executeInit(
+            resolveBuildRootDirectory(baseDirectory),
+            parseInitArguments()
+        );
+
         let result = await execution.execute(
             await resolveGradleExecutable(baseDirectory),
             resolveBuildRootDirectory(baseDirectory),
@@ -68,6 +73,12 @@ function resolveBuildRootDirectory(baseDirectory: string): string {
 function parseCommandLineArguments(): string[] {
     const input = inputOrNull("arguments");
     return input == null ? [] : parseArgsStringToArgv(input)
+}
+
+
+function parseInitArguments(): string | null {
+    const input = inputOrNull("init");
+    return input == null ? null : input
 }
 
 
